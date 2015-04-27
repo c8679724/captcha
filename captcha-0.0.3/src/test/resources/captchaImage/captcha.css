@@ -1,0 +1,51 @@
+body,div,p,a {
+	margin: 0;
+	padding: 0;
+	border: 0;
+}
+
+.yanzheng {
+	width: 290px;
+	height: 200px;
+	position: absolute;
+	left: 0;
+	top: 0;
+}
+
+.yanz-list {
+	width: 289px;
+	padding-left: 1px;
+}
+
+.notSelect {
+	float: left;
+	width: 70px;
+	height: 80px;
+	margin: 1px;
+	background: url(31.jpg) no-repeat;
+	width: 70px;
+}
+
+.select {
+	float: left;
+	width: 70px;
+	height: 80px;
+	margin: 1px;
+	background: url(32.jpg) no-repeat;
+}
+
+.yanzheng-top {
+	height: 39px;
+	width: 290px;
+	position: relative;
+}
+
+.shuaxin {
+	background: url(shuaxin.png) no-repeat;
+	cursor: pointer;
+	width: 52px;
+	height: 20px;
+	position: absolute;
+	right: 10px;
+	top: 5px;
+}
