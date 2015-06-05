@@ -1,0 +1,38 @@
+@CHARSET "UTF-8";
+
+.captcha {
+	position: relative;
+	width: 290px;
+	height: 200px;
+}
+
+.top {
+	margin-top: 50px;
+	margin-left: 50px;
+	position: relative;
+}
+
+.mouse {
+	position: absolute;
+	width: 16px;
+	height: 16px;
+	background: url(favicon.png) 0 0 no-repeat;
+}
+
+.reload-normal {
+	cursor: pointer;
+	width: 54px;
+	height: 25px;
+	position: absolute;
+	left: 234px;
+	top: 3px;
+	z-index: 1;
+}
+
+.up {
+	background: url(reload.png) 0 0 no-repeat;
+}
+
+.down {
+	background: url(reload.png) 0 -25px no-repeat;
+}

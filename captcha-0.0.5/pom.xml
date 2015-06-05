@@ -1,0 +1,229 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.telecom-ec</groupId>
+	<artifactId>captcha</artifactId>
+	<packaging>jar</packaging>
+	<!-- SNAPSHOT/RELEASE -->
+	<version>0.0.5-SNAPSHOT</version>
+	<name>captcha</name>
+	<url>http://www.189.cn/zqbiz/captcha</url>
+	<description>验证码生成项目</description>
+
+	<properties>
+		<!-- 主要依赖库的版本定义 -->
+		<log4j.version>2.1</log4j.version>
+		<!-- Plugin的属性定义 -->
+		<jdk.version>1.6</jdk.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
+	<repositories>
+		<repository>
+			<id>zqbiz</id>
+			<url>http://106.37.233.67:9090/nexus/content/groups/zqbiz/</url>
+		</repository>
+	</repositories>
+
+	<distributionManagement>
+		<snapshotRepository>
+			<id>zqbiz-nexus-snapshots</id>
+			<url>http://106.37.233.67:9090/nexus/content/repositories/snapshots</url>
+		</snapshotRepository>
+		<repository>
+			<id>zqbiz-nexus-releases</id>
+			<url>http://106.37.233.67:9090/nexus/content/repositories/releases</url>
+		</repository>
+	</distributionManagement>
+
+	<pluginRepositories>
+		<pluginRepository>
+			<id>zqbiz</id>
+			<url>http://106.37.233.67:9090/nexus/content/groups/zqbiz/</url>
+		</pluginRepository>
+	</pluginRepositories>
+
+	<dependencies>
+		<!-- log -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.7.7</version>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.4</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>1.7.10</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.17</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.11</version>
+			<scope>test</scope>
+		</dependency>
+
+	</dependencies>
+
+	<build>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+			<resource>
+				<directory>src/main/java</directory>
+				<excludes>
+					<exclude>**/*.java</exclude>
+				</excludes>
+			</resource>
+		</resources>
+		<plugins>
+			<!-- compiler插件, 设定JDK版本 -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.1</version>
+				<configuration>
+					<source>${jdk.version}</source>
+					<target>${jdk.version}</target>
+					<!-- <encoding>UTF-8</encoding> -->
+					<showWarnings>true</showWarnings>
+				</configuration>
+			</plugin>
+			<!-- resource插件 处理资源文件 -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>2.6</version>
+				<configuration>
+					<!-- <encoding>utf-8</encoding> -->
+					<!-- 不能进行强制转码的文件类型 -->
+					<nonFilteredFileExtensions>
+						<nonFilteredFileExtension>ttf</nonFilteredFileExtension>
+						<nonFilteredFileExtension>ttc</nonFilteredFileExtension>
+					</nonFilteredFileExtensions>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>2.5</version>
+			</plugin>
+			<!-- 部署到package nexus私服 -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-deploy-plugin</artifactId>
+				<version>2.8.2</version>
+			</plugin>
+			<!-- 部署到source nexus私服 -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>2.4</version>
+				<configuration>
+					<attach>true</attach>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>compile</phase>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<!-- dependency相关插件 最大的用途是帮助分析项目依赖，dependency:list能够列出项目最终解析到的依赖列表，dependency:tree能进一步的描绘项目依赖 -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+			</plugin>
+
+			<!-- 代码质量检查 start -->
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>sonar-maven-plugin</artifactId>
+				<version>2.4</version>
+			</plugin>
+
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>findbugs-maven-plugin</artifactId>
+				<version>3.0.1</version>
+				<configuration>
+					<findbugsXmlOutput>true</findbugsXmlOutput>
+					<findbugsXmlWithMessages>true</findbugsXmlWithMessages>
+					<xmlOutput>true</xmlOutput>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-pmd-plugin</artifactId>
+				<version>3.4</version>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+				<version>2.15</version>
+			</plugin>
+
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>jdepend-maven-plugin</artifactId>
+				<version>2.0</version>
+			</plugin>
+			<!-- 代码质量检查 end -->
+		</plugins>
+		<sourceDirectory>src\main\java</sourceDirectory>
+		<outputDirectory>target\classes</outputDirectory>
+	</build>
+	<profiles>
+		<profile>
+			<id>dev</id>
+			<properties>
+				<env>dev</env>
+				<sonar.language>java</sonar.language>
+				<sonar.jdbc.driverClassName>com.mysql.jdbc.Driver</sonar.jdbc.driverClassName>
+				<sonar.jdbc.url>
+					jdbc:mysql://192.168.232.139:3306/sonar?useUnicode=true&amp;characterEncoding=utf8
+				</sonar.jdbc.url>
+				<sonar.jdbc.username>root</sonar.jdbc.username>
+				<sonar.jdbc.password>root</sonar.jdbc.password>
+				<sonar.host.url>http://192.168.232.139:9000/sonar</sonar.host.url>
+			</properties>
+			<activation>
+				<activeByDefault>true</activeByDefault><!--默认启用的是dev环境配置 -->
+			</activation>
+		</profile>
+		<profile>
+			<id>test</id>
+			<properties>
+				<env>test</env>
+			</properties>
+		</profile>
+		<profile>
+			<id>product</id>
+			<properties>
+				<env>product</env>
+			</properties>
+		</profile>
+	</profiles>
+</project>
